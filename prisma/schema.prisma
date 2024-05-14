@@ -1,0 +1,30 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  userImages   UserImage[]  // Adding the relationship field here
+}
+
+
+
+model UserImage {
+  id            Int      @id @default(autoincrement())
+  image        Bytes
+  filename      String
+  originalname  String
+  size          Int
+  userId        Int
+  user          User     @relation(fields: [userId], references: [id])
+ processType Int     @default(0) @db.TinyInt
+}
